@@ -15,7 +15,7 @@ class DetectUnfinishGameState extends PlayingblocState {
 
 class RollingPlayingChangeNumberState extends PlayingblocState {}
 
-class PausedAutoPlayState extends PlayingblocState {
+class PausedGameState extends PlayingblocState {
 
 }
 

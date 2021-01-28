@@ -39,9 +39,6 @@ class _CheckingScreenState extends State<CheckingScreen> {
                   iconSize: 48,
                   tooltip: 'Check winner',
                   alignment: Alignment.center,
-                  onPressed: () {
-                    //TODO show settings dialog
-                  },
                 ),
               ],
             ),

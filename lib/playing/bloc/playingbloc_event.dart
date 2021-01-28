@@ -15,7 +15,7 @@ class RandomNumberEvent extends PlayingblocEvent {}
 
 class ShowHistoryEvent extends PlayingblocEvent {}
 
-class PauseAutoPlay extends PlayingblocEvent {}
+class PauseGameEvent extends PlayingblocEvent {}
 
 class UpdateSettingEvent extends PlayingblocEvent {
   final bool autoPlay;

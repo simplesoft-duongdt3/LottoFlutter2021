@@ -50,12 +50,12 @@ class PlayingblocBloc extends Bloc<PlayingblocEvent, PlayingblocState> {
       }
       _gameManager.saveGameToCache(_game);
       yield StartedGameState();
-    } else if (event is PauseAutoPlay) {
+    } else if (event is PauseGameEvent) {
       _isPauseGame = true;
       if (_jobAutoRandom != null) {
         _jobAutoRandom.cancel();
       }
-      yield PausedAutoPlayState();
+      yield PausedGameState();
     } else if (event is _HandleRandomNumberEvent) {
       var result = _game.randomNumber();
       if (result is NumberResult) {
