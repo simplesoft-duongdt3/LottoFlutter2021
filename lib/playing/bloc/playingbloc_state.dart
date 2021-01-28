@@ -15,9 +15,14 @@ class DetectUnfinishGameState extends PlayingblocState {
 
 class RollingPlayingChangeNumberState extends PlayingblocState {}
 
+class PausedAutoPlayState extends PlayingblocState {
+
+}
+
 class PlayingChangeNumberState extends PlayingblocState {
   final int number;
-  PlayingChangeNumberState(this.number);
+  final bool isAutoPlay;
+  PlayingChangeNumberState(this.number, this.isAutoPlay);
 }
 
 class PlayingEndGameState extends PlayingblocState {}

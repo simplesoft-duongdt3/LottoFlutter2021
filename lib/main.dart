@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 import 'playing/playing.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import 'package:hive/hive.dart';
 import 'data/game_manager.dart';
 
 void main() async {
-  await Hive.initFlutter();
-  Hive.registerAdapter(GameSaveInfoAdapter());
-  await Hive.openBox<GameSaveInfo>("games");
+  await GameManager.init();
   runApp(MyApp());
 }
 

@@ -11,26 +11,39 @@ class NumberResult extends GameNumberResult {
 class NotFoundNumberResult extends GameNumberResult {}
 
 class Game {
-  int id;
-  List gotNumbers = [];
-  List numbers = [];
+  String id;
+  List<int> gotNumbers = [];
+  List<int> _numbers = [];
 
-  Game(this.id, this.gotNumbers) {
+  Game(String id, List<int> gotNumbers) {
+    this.id = id;
+    this.gotNumbers.addAll(gotNumbers);
     for (var i = 1; i <= 10; i++) {
       if (!gotNumbers.contains(i)) {
-        numbers.add(i);
+        _numbers.add(i);
       }
     }
   }
 
   GameNumberResult randomNumber() {
-    if (numbers.isNotEmpty) {
+    if (_numbers.isNotEmpty) {
       final _random = new Random();
-      var gotNumber = numbers[_random.nextInt(numbers.length)];
+      var gotNumber = _numbers[_random.nextInt(_numbers.length)];
       gotNumbers.add(gotNumber);
-      numbers.remove(gotNumber);
+      _numbers.remove(gotNumber);
       return NumberResult(gotNumber);
     }
     return NotFoundNumberResult();
+  }
+
+  int getLastNumber() {
+    if (gotNumbers.isEmpty) {
+      return null;
+    }
+    return gotNumbers.last;
+  }
+
+  bool isNothingToRoll() {
+    return _numbers.isEmpty;
   }
 }
