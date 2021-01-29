@@ -121,4 +121,13 @@ class PlayingblocBloc extends Bloc<PlayingblocEvent, PlayingblocState> {
       return _game.gotNumbers.contains(item);
     });
   }
+
+  List<int> getGotNumbers() {
+    List<int> items = [];
+    if (_game != null) {
+      items.addAll(_game.gotNumbers);
+    }
+
+    return items;
+  }
 }

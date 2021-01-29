@@ -6,6 +6,7 @@ import 'bloc/playingbloc_bloc.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:loto2021/playing/check_button.dart';
+import 'package:loto2021/history/history.dart';
 import 'package:flutter/services.dart';
 
 class PlayingScreen extends StatelessWidget {
@@ -162,8 +163,8 @@ class PlayingScreen extends StatelessWidget {
             iconSize: 32,
             tooltip: 'History',
             alignment: Alignment.center,
-            onPressed: () {
-              _handleHistoryButton(context);
+            onPressed: () async {
+              await _handleHistoryButton(context);
             },
           ),
           SizedBox(
@@ -471,5 +472,13 @@ class PlayingScreen extends StatelessWidget {
     BlocProvider.of<PlayingblocBloc>(context).saveSetting();
   }
 
-  void _handleHistoryButton(BuildContext context) {}
+  Future<void> _handleHistoryButton(BuildContext context) async {
+    BlocProvider.of<PlayingblocBloc>(context).add(PauseGameEvent());
+    List<int> numbers =
+        BlocProvider.of<PlayingblocBloc>(context).getGotNumbers();
+    await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => HistoryScreen(numbers)),
+    );
+  }
 }
