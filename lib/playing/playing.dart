@@ -6,6 +6,7 @@ import 'bloc/playingbloc_bloc.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:loto2021/playing/check_button.dart';
+import 'package:flutter/services.dart';
 
 class PlayingScreen extends StatelessWidget {
   const PlayingScreen({Key key}) : super(key: key);
@@ -54,82 +55,130 @@ class PlayingScreen extends StatelessWidget {
     );
   }
 
-  Scaffold renderBodyScreen(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            BlocBuilder<PlayingblocBloc, PlayingblocState>(
-              builder: (context, state) {
-                List<Widget> items = _buildWidgetsFromSettings(context);
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: items,
-                );
-              },
-            ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  child: BlocBuilder<PlayingblocBloc, PlayingblocState>(
-                    builder: (context, state) {
-                      if (state is PlayingChangeNumberState) {
-                        return renderPlayingChangeNumberState(state, context);
-                      } else if (state is RollingPlayingChangeNumberState) {
-                        return renderRollingPlayingChangeNumberState(context);
-                      } else if (state is PlayingEndGameState) {
-                        return renderPlayingEndGameState(context);
-                      } else if (state is StartedGameState) {
-                        return renderStartedGameState(context);
-                      } else if (state is PausedGameState) {
-                        return renderPausedGameState(context);
-                      } else {
-                        return renderInitStart(context);
-                      }
-                    },
+  Future<bool> _onWillPop(BuildContext context) async {
+    return (await showDialog(
+          context: context,
+          builder: (context) => new AlertDialog(
+            title: new Text('Are you sure?'),
+            content: new Text('Do you want to exit game?'),
+            actions: <Widget>[
+              new FlatButton(
+                  onPressed: () => Navigator.of(context).pop(false),
+                  child: new Text(
+                    'Stay here!',
+                    style: TextStyle(color: Colors.blue),
+                  )),
+              new FlatButton(
+                  onPressed: () => Navigator.of(context).pop(true),
+                  child: new Text(
+                    'Exit game',
+                    style: TextStyle(color: Colors.red),
+                  )),
+            ],
+          ),
+        )) ??
+        false;
+  }
+
+  Widget renderBodyScreen(BuildContext context) {
+    return WillPopScope(
+      onWillPop: () async {
+        return _onWillPop(context);
+      },
+      child: Scaffold(
+        body: SafeArea(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              BlocBuilder<PlayingblocBloc, PlayingblocState>(
+                builder: (context, state) {
+                  List<Widget> items = _buildWidgetsFromSettings(context);
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: items,
+                  );
+                },
+              ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    child: BlocBuilder<PlayingblocBloc, PlayingblocState>(
+                      builder: (context, state) {
+                        if (state is PlayingChangeNumberState) {
+                          return renderPlayingChangeNumberState(state, context);
+                        } else if (state is RollingPlayingChangeNumberState) {
+                          return renderRollingPlayingChangeNumberState(context);
+                        } else if (state is PlayingEndGameState) {
+                          return renderPlayingEndGameState(context);
+                        } else if (state is StartedGameState) {
+                          return renderStartedGameState(context);
+                        } else if (state is PausedGameState) {
+                          return renderPausedGameState(context);
+                        } else {
+                          return renderInitStart(context);
+                        }
+                      },
+                    ),
                   ),
                 ),
               ),
-            ),
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.center,
-            //   children: items,
-            // ),
-          ],
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.center,
+              //   children: items,
+              // ),
+            ],
+          ),
         ),
+        floatingActionButton: BlocBuilder<PlayingblocBloc, PlayingblocState>(
+          builder: (context, state) {
+            if (state is StartedGameState) {
+              return renderFloatingButtonStartedGameState(context);
+            } else if (state is PausedGameState) {
+              return renderFloatingButtonPausedAutoPlayState(context);
+            } else if (state is PlayingChangeNumberState) {
+              return renderFloatingButtonPlayingChangeNumberState(
+                  context, state);
+            } else if (state is PlayingEndGameState ||
+                state is RollingPlayingChangeNumberState) {
+              return renderFloatingButtonPlayingEndGameState(context);
+            } else {
+              return renderFloatingButtonInitStart(context);
+            }
+          },
+        ), // This trailing comma makes auto-formatting nicer for build methods.
       ),
-      floatingActionButton: BlocBuilder<PlayingblocBloc, PlayingblocState>(
-        builder: (context, state) {
-          if (state is StartedGameState) {
-            return renderFloatingButtonStartedGameState(context);
-          } else if (state is PausedGameState) {
-            return renderFloatingButtonPausedAutoPlayState(context);
-          } else if (state is PlayingChangeNumberState) {
-            return renderFloatingButtonPlayingChangeNumberState(context, state);
-          } else if (state is PlayingEndGameState ||
-              state is RollingPlayingChangeNumberState) {
-            return renderFloatingButtonPlayingEndGameState(context);
-          } else {
-            return renderFloatingButtonInitStart(context);
-          }
-        },
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 
   Widget _renderButtonCheckWinner(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(12.0),
-      child: SizedBox(
-        height: 50,
-        width: 150,
-        child: NiceButton(
-            onPressed: () async {
-              await _handleCheckWinnerButton(context);
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          IconButton(
+            icon: Icon(Icons.history),
+            iconSize: 32,
+            tooltip: 'History',
+            alignment: Alignment.center,
+            onPressed: () {
+              _handleHistoryButton(context);
             },
-            style: NiceButtonStyle.white),
+          ),
+          SizedBox(
+            width: 8,
+          ),
+          SizedBox(
+            height: 50,
+            width: 125,
+            child: NiceButton(
+                onPressed: () async {
+                  await _handleCheckWinnerButton(context);
+                },
+                style: NiceButtonStyle.white),
+          ),
+        ],
       ),
     );
   }
@@ -203,11 +252,16 @@ class PlayingScreen extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        Text(
-          "End game",
-          style: Theme.of(context).textTheme.headline1,
-          textAlign: TextAlign.center,
+        Expanded(
+          child: Center(
+            child: Text(
+              "End game",
+              style: Theme.of(context).textTheme.headline1,
+              textAlign: TextAlign.center,
+            ),
+          ),
         ),
+        _renderButtonCheckWinner(context),
       ],
     );
   }
@@ -347,8 +401,8 @@ class PlayingScreen extends StatelessWidget {
       iconSize: 32,
       tooltip: 'Exit game',
       alignment: Alignment.center,
-      onPressed: () async {
-        await _handleClickSetting(context);
+      onPressed: () {
+        _handleExitButton(context);
       },
     ));
 
@@ -373,6 +427,40 @@ class PlayingScreen extends StatelessWidget {
     return items;
   }
 
+  Future<void> _handleExitButton(BuildContext context) async {
+    var result = (await showDialog(
+          context: context,
+          builder: (context) => new AlertDialog(
+            title: new Text('Are you sure?'),
+            content: new Text('Do you want to exit game?'),
+            actions: <Widget>[
+              new FlatButton(
+                onPressed: () => Navigator.of(context).pop("startnewgame"),
+                child: new Text(
+                  'Start new game',
+                  style: TextStyle(color: Colors.blue),
+                ),
+              ),
+              new FlatButton(
+                onPressed: () => Navigator.of(context).pop("exit"),
+                child: new Text(
+                  'Exit',
+                  style: TextStyle(color: Colors.red),
+                ),
+              ),
+            ],
+          ),
+        )) ??
+        "cancel";
+    if (result == "exit") {
+      SystemNavigator.pop();
+    } else if (result == "startnewgame") {
+      BlocProvider.of<PlayingblocBloc>(context).add(StartNewGameEvent());
+    } else {
+      //nothing to do
+    }
+  }
+
   Future _handleClickSetting(BuildContext context) async {
     var setting = BlocProvider.of<PlayingblocBloc>(context).getSetting();
     BlocProvider.of<PlayingblocBloc>(context).add(PauseGameEvent());
@@ -382,4 +470,6 @@ class PlayingScreen extends StatelessWidget {
     );
     BlocProvider.of<PlayingblocBloc>(context).saveSetting();
   }
+
+  void _handleHistoryButton(BuildContext context) {}
 }

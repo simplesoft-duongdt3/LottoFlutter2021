@@ -130,12 +130,12 @@ class NiceButton extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(0.0, 8.0, 32.0, 8.0),
+                padding: const EdgeInsets.fromLTRB(0.0, 8.0, 8.0, 8.0),
                 child: Text(
                   text,
                   style: textStyle ??
                       TextStyle(
-                          fontSize: 18.0,
+                          fontSize: 16.0,
                           fontWeight: FontWeight.w500,
                           color: style == NiceButtonStyle.black
                               ? Colors.white
