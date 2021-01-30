@@ -25,6 +25,7 @@ class PlayingblocBloc extends Bloc<PlayingblocEvent, PlayingblocState> {
 
   PlayingblocBloc() : super(PlayingInitState()) {
     _setting = _gameManager.getCurrentSetting();
+    _game = _gameManager.startNewGame();
   }
 
   Setting getSetting() {

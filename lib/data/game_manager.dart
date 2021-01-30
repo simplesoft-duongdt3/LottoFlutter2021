@@ -48,7 +48,7 @@ class GameManager {
 
     if (games.isNotEmpty) {
       var game = games.getAt(games.length - 1);
-      if (!game.finish) {
+      if (!game.finish && game.gotNumbers.isNotEmpty) {
         Game cachedGame = Game(game.id, game.gotNumbers);
         return cachedGame;
       }
@@ -84,7 +84,7 @@ class GameManager {
           settingCached.voice);
     }
 
-    return Setting(false, 3, "male");
+    return Setting(true, 10, "male");
   }
 
   static Future<void> init() async {
