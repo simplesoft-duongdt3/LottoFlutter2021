@@ -9,7 +9,6 @@ class HistoryScreen extends StatefulWidget {
 }
 
 class _HistoryScreenState extends State<HistoryScreen> {
-  final List<int> _selectedNumbers = [];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,8 +32,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
               ],
             ),
             Expanded(
-              child: ListView(
-                children: _formChild(context),
+              child: SingleChildScrollView(
+                child: _formChild(context),
               ),
             ),
           ],
@@ -48,12 +47,10 @@ class _HistoryScreenState extends State<HistoryScreen> {
     );
   }
 
-  List<Widget> _formChild(BuildContext context) {
-    List<Widget> items = [];
-    items.add(Wrap(
+  Widget _formChild(BuildContext context) {
+    return Wrap(
       children: buildItemsRow(widget.numbers),
-    ));
-    return items;
+    );
   }
 
   List<Widget> buildItemsRow(List<int> numbers) {

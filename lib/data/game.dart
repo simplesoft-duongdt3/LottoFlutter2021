@@ -18,11 +18,12 @@ class Game {
   Game(String id, List<int> gotNumbers) {
     this.id = id;
     this.gotNumbers.addAll(gotNumbers);
-    for (var i = 1; i <= 10; i++) {
+    for (var i = 1; i <= 90; i++) {
       if (!gotNumbers.contains(i)) {
         _numbers.add(i);
       }
     }
+    _numbers.shuffle();
   }
 
   GameNumberResult randomNumber() {

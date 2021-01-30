@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:custom_radio_grouped_button/custom_radio_grouped_button.dart';
 
 class CheckingScreen extends StatefulWidget {
   const CheckingScreen({Key key}) : super(key: key);
