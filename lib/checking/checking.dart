@@ -59,39 +59,39 @@ class _CheckingScreenState extends State<CheckingScreen> {
 
   List<Widget> _formChild(BuildContext context) {
     List<Widget> items = [];
-    items.add(buildItemsRow(1, 10, Colors.grey[50]));
+    items.add(buildItemsRow(1, 9, Colors.grey[50]));
     items.add(SizedBox(
       height: 8,
     ));
-    items.add(buildItemsRow(11, 19, Colors.grey[350]));
+    items.add(buildItemsRow(10, 19, Colors.grey[350]));
     items.add(SizedBox(
       height: 8,
     ));
-    items.add(buildItemsRow(21, 29, Colors.grey[50]));
+    items.add(buildItemsRow(20, 29, Colors.grey[50]));
     items.add(SizedBox(
       height: 8,
     ));
-    items.add(buildItemsRow(31, 39, Colors.grey[350]));
+    items.add(buildItemsRow(30, 39, Colors.grey[350]));
     items.add(SizedBox(
       height: 8,
     ));
-    items.add(buildItemsRow(41, 49, Colors.grey[50]));
+    items.add(buildItemsRow(40, 49, Colors.grey[50]));
     items.add(SizedBox(
       height: 8,
     ));
-    items.add(buildItemsRow(51, 59, Colors.grey[350]));
+    items.add(buildItemsRow(50, 59, Colors.grey[350]));
     items.add(SizedBox(
       height: 8,
     ));
-    items.add(buildItemsRow(61, 69, Colors.grey[50]));
+    items.add(buildItemsRow(60, 69, Colors.grey[50]));
     items.add(SizedBox(
       height: 8,
     ));
-    items.add(buildItemsRow(71, 79, Colors.grey[350]));
+    items.add(buildItemsRow(70, 79, Colors.grey[350]));
     items.add(SizedBox(
       height: 8,
     ));
-    items.add(buildItemsRow(81, 90, Colors.grey[50]));
+    items.add(buildItemsRow(80, 90, Colors.grey[50]));
 
     return items;
   }
