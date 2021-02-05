@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'playing/playing.dart';
 import 'data/game_manager.dart';
+import 'package:screen/screen.dart';
 
 void main() async {
   await GameManager.init();
+  await Screen.keepOn(true);
   runApp(MyApp());
 }
 
